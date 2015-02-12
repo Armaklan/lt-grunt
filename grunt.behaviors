@@ -1,0 +1,2 @@
+{:+ {:app [(:lt.objs.plugins/load-js "grunt_compiled.js")]
+     }}
