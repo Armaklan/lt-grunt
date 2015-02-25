@@ -10,6 +10,7 @@
             [lt.objs.platform :as platform])
   (:require-macros [lt.macros :refer [behavior]]))
 
+(def gruntcli-path (files/join plugins/*plugin-dir* "node_modules/.bin/grunt"))
 
 (defn log [str]
   (.log js/console str))
@@ -58,7 +59,7 @@
            (when (seq stderr) (println "STDERR: " stderr)))))
 
 (defn run-task-process [task]
-  (let [grunt-cmd (concatener (current-modules) "/.bin/grunt --no-color ")]
+  (let [grunt-cmd (concatener gruntcli-path " --no-color ")]
     (let [child (.exec (js/require "child_process")
            (concatener grunt-cmd (:name task))
            )]
@@ -72,11 +73,12 @@
 
 
 (defn add-selector []
-  (selector {:items (get-tasks)
-             :key :name
-             :placeholder "Grunt target"
-             :transform #(str "<p>" (:name %4) "</p>"
-                              "<p class='binding'>" (:description %4) "</p>")}))
+  (when-let [editor (pool/last-active)]
+    (selector {:items (get-tasks)
+               :key :name
+               :placeholder "Grunt target"
+               :transform #(str "<p>" (:name %4) "</p>"
+                                "<p class='binding'>" (:description %4) "</p>")})))
 
 (defn refresh-task []
   (object/assoc-in! cmd/manager [:commands :grunt.run :options] (add-selector)))
