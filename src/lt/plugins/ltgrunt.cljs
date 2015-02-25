@@ -9,13 +9,6 @@
             [lt.objs.command :as cmd])
   (:require-macros [lt.macros :refer [behavior]]))
 
-(object/object* ::grunt.client
-                :tags #{:client :grunt.client}
-                :behaviors [:start-task :kill]
-                :name "Grunt task"
-                :queue [])
-
-(def grunt-client (object/create ::grunt.client))
 
 (defn log [str]
   (.log js/console str))
@@ -55,12 +48,19 @@
 (defn concatener [str1 str2]
   (string/join (concat str1 str2)))
 
+(defn cmd-execution [command]
+  (println "Execution de : " command)
+  (.exec (js/require "child_process")
+         command
+         (fn [err stdout stderr]
+           (when (seq stdout) (println "STDOUT: " stdout))
+           (when (seq stderr) (println "STDERR: " stderr)))))
+
 (defn run-task-process [task]
-  (let [grunt-cmd (concatener (current-modules) "/grunt-cli/bin/grunt --no-color ")]
+  (let [grunt-cmd (concatener (current-modules) "/.bin/grunt --no-color ")]
     (let [child (.exec (js/require "child_process")
            (concatener grunt-cmd (:name task))
-           (fn [err stdout stderr]
-             (when (seq err) (println err))))]
+           )]
       (.on (.-stdout child) "data" (fn [data] (log data)))
       (.on (.-stderr child) "data" (fn [data] (log data)))
       child)))
@@ -69,9 +69,6 @@
   (let [tasks (grunt-task-list)]
     (map (fn [key] {:name key :description (.-info (aget tasks key))}) (.keys js/Object tasks))))
 
-(defn selector [opts]
-  (doto (sidebar/filter-list opts)
-    (object/add-behavior! ::set-selected)))
 
 (defn add-selector []
   (selector {:items (get-tasks)
@@ -86,10 +83,19 @@
 (behavior :kill
           :triggers #{:kill}
           :reaction (fn [this]
-                      (when-let [process (::process @this)]
-                        (log "Kill process : ")
-                        (.kill process)
-                        (object/merge! this {::process nil}))))
+                     (when-let [process (::process @this)]
+                        (.removeAllListeners process)
+                        (let [cmd (string/join (concat "taskkill /PID " (str (.-pid process)) " /T /F"))]
+                          (object/merge! this {::process nil})
+                          (cmd-execution cmd)))))
+
+
+;;(behavior :kill
+;;          :triggers #{:kill}
+;;          :reaction (fn [this]
+;;                     (when-let [process (::process @this)]
+;;                        (.kill process)
+;;                        (object/merge! this {::process nil}))))
 
 (behavior :start-task
           :triggers #{:start-task}
@@ -103,6 +109,19 @@
           :triggers #{:select}
           :reaction (fn [this v]
                       (sidebar/exec-active! v)))
+
+(defn selector [opts]
+  (doto (sidebar/filter-list opts)
+    (object/add-behavior! ::set-selected)))
+
+(object/object* ::grunt.client
+                :tags #{:client :grunt.client}
+                :behaviors [:start-task :kill]
+                :name "Grunt task"
+                :queue [])
+
+(def grunt-client (object/create ::grunt.client))
+
 
 (cmd/command {:command :grunt.kill
               :desc "Grunt: Kill task"

@@ -8,6 +8,14 @@ Features
 
 - View task list
 - Execute a task
+- Kill last launch command
+
+How use it
+----------
+
+- Open a file who belongs to your project
+- Launch "Grunt : load task list" to parse gruntfile and extract list of command
+- Launch "Grunt : run task" to execute the grunt command
 
 Configuration
 -------------
@@ -20,6 +28,4 @@ No configuration :
 TODO
 -------------
 
-- Add "Kill grunt session" command
-- Redirect log to LightTable console
 - Automatically refresh grunt task list
