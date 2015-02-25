@@ -2,8 +2,10 @@ if(!lt.util.load.provided_QMARK_('lt.plugins.grunt')) {
 goog.provide('lt.plugins.grunt');
 goog.require('cljs.core');
 goog.require('lt.objs.command');
+goog.require('lt.objs.platform');
 goog.require('lt.objs.editor');
 goog.require('lt.object');
+goog.require('lt.objs.platform');
 goog.require('lt.objs.editor.pool');
 goog.require('lt.objs.editor.pool');
 goog.require('lt.objs.files');
@@ -29,7 +31,7 @@ cli.option("verbose","true");
 return cli;
 });
 lt.plugins.grunt.grunt_task_list = (function grunt_task_list(){try{var cli = lt.plugins.grunt.grunt_cli.call(null);return cli.task._tasks;
-}catch (e7895){var e = e7895;lt.plugins.grunt.log.call(null,"Impossible de trouver grunt");
+}catch (e7975){var e = e7975;lt.plugins.grunt.log.call(null,"Impossible de trouver grunt");
 return [];
 }});
 lt.plugins.grunt.run_task = (function run_task(task){var cli = lt.plugins.grunt.grunt_cli.call(null);cli.task.run(new cljs.core.Keyword(null,"name","name",1017277949).cljs$core$IFn$_invoke$arity$1(task));
@@ -64,15 +66,24 @@ return (function (key){return new cljs.core.PersistentArrayMap(null, 2, [new clj
 });})(tasks))
 ,Object.keys(tasks));
 });
-lt.plugins.grunt.add_selector = (function add_selector(){return lt.plugins.grunt.selector.call(null,new cljs.core.PersistentArrayMap(null, 4, [new cljs.core.Keyword(null,"items","items",1114430258),lt.plugins.grunt.get_tasks.call(null),new cljs.core.Keyword(null,"key","key",1014010321),new cljs.core.Keyword(null,"name","name",1017277949),new cljs.core.Keyword(null,"placeholder","placeholder",1612151013),"Grunt target",new cljs.core.Keyword(null,"transform","transform",2066570974),(function (p1__7897_SHARP_,p2__7898_SHARP_,p3__7899_SHARP_,p4__7896_SHARP_){return [cljs.core.str("<p>"),cljs.core.str(new cljs.core.Keyword(null,"name","name",1017277949).cljs$core$IFn$_invoke$arity$1(p4__7896_SHARP_)),cljs.core.str("</p>"),cljs.core.str("<p class='binding'>"),cljs.core.str(new cljs.core.Keyword(null,"description","description",3584325486).cljs$core$IFn$_invoke$arity$1(p4__7896_SHARP_)),cljs.core.str("</p>")].join('');
+lt.plugins.grunt.add_selector = (function add_selector(){return lt.plugins.grunt.selector.call(null,new cljs.core.PersistentArrayMap(null, 4, [new cljs.core.Keyword(null,"items","items",1114430258),lt.plugins.grunt.get_tasks.call(null),new cljs.core.Keyword(null,"key","key",1014010321),new cljs.core.Keyword(null,"name","name",1017277949),new cljs.core.Keyword(null,"placeholder","placeholder",1612151013),"Grunt target",new cljs.core.Keyword(null,"transform","transform",2066570974),(function (p1__7977_SHARP_,p2__7978_SHARP_,p3__7979_SHARP_,p4__7976_SHARP_){return [cljs.core.str("<p>"),cljs.core.str(new cljs.core.Keyword(null,"name","name",1017277949).cljs$core$IFn$_invoke$arity$1(p4__7976_SHARP_)),cljs.core.str("</p>"),cljs.core.str("<p class='binding'>"),cljs.core.str(new cljs.core.Keyword(null,"description","description",3584325486).cljs$core$IFn$_invoke$arity$1(p4__7976_SHARP_)),cljs.core.str("</p>")].join('');
 })], null));
 });
 lt.plugins.grunt.refresh_task = (function refresh_task(){return lt.object.assoc_in_BANG_.call(null,lt.objs.command.manager,new cljs.core.PersistentVector(null, 3, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"commands","commands",4706336250),new cljs.core.Keyword(null,"grunt.run","grunt.run",4658105151),new cljs.core.Keyword(null,"options","options",4059396624)], null),lt.plugins.grunt.add_selector.call(null));
 });
+lt.plugins.grunt.kill = (function (){var method_table__7229__auto__ = cljs.core.atom.call(null,cljs.core.PersistentArrayMap.EMPTY);var prefer_table__7230__auto__ = cljs.core.atom.call(null,cljs.core.PersistentArrayMap.EMPTY);var method_cache__7231__auto__ = cljs.core.atom.call(null,cljs.core.PersistentArrayMap.EMPTY);var cached_hierarchy__7232__auto__ = cljs.core.atom.call(null,cljs.core.PersistentArrayMap.EMPTY);var hierarchy__7233__auto__ = cljs.core.get.call(null,cljs.core.PersistentArrayMap.EMPTY,new cljs.core.Keyword(null,"hierarchy","hierarchy",3129050535),cljs.core.get_global_hierarchy.call(null));return (new cljs.core.MultiFn("kill",((function (method_table__7229__auto__,prefer_table__7230__auto__,method_cache__7231__auto__,cached_hierarchy__7232__auto__,hierarchy__7233__auto__){
+return (function (){return lt.objs.platform.win_QMARK_.call(null);
+});})(method_table__7229__auto__,prefer_table__7230__auto__,method_cache__7231__auto__,cached_hierarchy__7232__auto__,hierarchy__7233__auto__))
+,new cljs.core.Keyword(null,"default","default",2558708147),hierarchy__7233__auto__,method_table__7229__auto__,prefer_table__7230__auto__,method_cache__7231__auto__,cached_hierarchy__7232__auto__));
+})();
+cljs.core._add_method.call(null,lt.plugins.grunt.kill,true,(function (process){var cmd = clojure.string.join.call(null,cljs.core.concat.call(null,"taskkill /PID ",[cljs.core.str(process.pid)].join('')," /T /F"));return lt.plugins.grunt.cmd_execution.call(null,cmd);
+}));
+cljs.core._add_method.call(null,lt.plugins.grunt.kill,false,(function (process){return process.kill();
+}));
 lt.plugins.grunt.__BEH__kill = (function __BEH__kill(this$){var temp__4126__auto__ = new cljs.core.Keyword("lt.plugins.grunt","process","lt.plugins.grunt/process",884763508).cljs$core$IFn$_invoke$arity$1(cljs.core.deref.call(null,this$));if(cljs.core.truth_(temp__4126__auto__))
 {var process = temp__4126__auto__;process.removeAllListeners();
-var cmd = clojure.string.join.call(null,cljs.core.concat.call(null,"taskkill /PID ",[cljs.core.str(process.pid)].join('')," /T /F"));lt.object.merge_BANG_.call(null,this$,new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword("lt.plugins.grunt","process","lt.plugins.grunt/process",884763508),null], null));
-return lt.plugins.grunt.cmd_execution.call(null,cmd);
+lt.plugins.grunt.kill.call(null,process);
+return lt.object.merge_BANG_.call(null,this$,new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword("lt.plugins.grunt","process","lt.plugins.grunt/process",884763508),null], null));
 } else
 {return null;
 }
@@ -85,8 +96,8 @@ lt.object.behavior_STAR_.call(null,new cljs.core.Keyword(null,"start-task","star
 lt.plugins.grunt.__BEH__set_selected = (function __BEH__set_selected(this$,v){return lt.objs.sidebar.command.exec_active_BANG_.call(null,v);
 });
 lt.object.behavior_STAR_.call(null,new cljs.core.Keyword("lt.plugins.grunt","set-selected","lt.plugins.grunt/set-selected",3339425851),new cljs.core.Keyword(null,"triggers","triggers",2516997421),new cljs.core.PersistentHashSet(null, new cljs.core.PersistentArrayMap(null, 1, [new cljs.core.Keyword(null,"select","select",4402849902),null], null), null),new cljs.core.Keyword(null,"reaction","reaction",4441361819),lt.plugins.grunt.__BEH__set_selected);
-lt.plugins.grunt.selector = (function selector(opts){var G__7901 = lt.objs.sidebar.command.filter_list.call(null,opts);lt.object.add_behavior_BANG_.call(null,G__7901,new cljs.core.Keyword("lt.plugins.grunt","set-selected","lt.plugins.grunt/set-selected",3339425851));
-return G__7901;
+lt.plugins.grunt.selector = (function selector(opts){var G__7981 = lt.objs.sidebar.command.filter_list.call(null,opts);lt.object.add_behavior_BANG_.call(null,G__7981,new cljs.core.Keyword("lt.plugins.grunt","set-selected","lt.plugins.grunt/set-selected",3339425851));
+return G__7981;
 });
 lt.object.object_STAR_.call(null,new cljs.core.Keyword("lt.plugins.grunt","grunt.client","lt.plugins.grunt/grunt.client",4277577878),new cljs.core.Keyword(null,"tags","tags",1017456523),new cljs.core.PersistentHashSet(null, new cljs.core.PersistentArrayMap(null, 2, [new cljs.core.Keyword(null,"client","client",3951159101),null,new cljs.core.Keyword(null,"grunt.client","grunt.client",1077045947),null], null), null),new cljs.core.Keyword(null,"behaviors","behaviors",607554515),new cljs.core.PersistentVector(null, 2, 5, cljs.core.PersistentVector.EMPTY_NODE, [new cljs.core.Keyword(null,"start-task","start-task",3689542530),new cljs.core.Keyword(null,"kill","kill",1017196240)], null),new cljs.core.Keyword(null,"name","name",1017277949),"Grunt task",new cljs.core.Keyword(null,"queue","queue",1121848451),cljs.core.PersistentVector.EMPTY);
 lt.plugins.grunt.grunt_client = lt.object.create.call(null,new cljs.core.Keyword("lt.plugins.grunt","grunt.client","lt.plugins.grunt/grunt.client",4277577878));

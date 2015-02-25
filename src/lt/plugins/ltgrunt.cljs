@@ -6,7 +6,8 @@
             [lt.objs.editor :as editor]
             [lt.objs.editor.pool :as pool]
             [lt.objs.sidebar.command :as sidebar]
-            [lt.objs.command :as cmd])
+            [lt.objs.command :as cmd]
+            [lt.objs.platform :as platform])
   (:require-macros [lt.macros :refer [behavior]]))
 
 
@@ -80,22 +81,24 @@
 (defn refresh-task []
   (object/assoc-in! cmd/manager [:commands :grunt.run :options] (add-selector)))
 
+
+;; Kill have 2 definition : for windows, and for other env
+(defmulti kill (fn [] (platform/win?)))
+
+(defmethod kill true [process]
+  (let [cmd (string/join (concat "taskkill /PID " (str (.-pid process)) " /T /F"))]
+                          (cmd-execution cmd)))
+(defmethod kill false [process]
+  (.kill process))
+
 (behavior :kill
           :triggers #{:kill}
           :reaction (fn [this]
                      (when-let [process (::process @this)]
                         (.removeAllListeners process)
-                        (let [cmd (string/join (concat "taskkill /PID " (str (.-pid process)) " /T /F"))]
-                          (object/merge! this {::process nil})
-                          (cmd-execution cmd)))))
+                        (kill process)
+                        (object/merge! this {::process nil}))))
 
-
-;;(behavior :kill
-;;          :triggers #{:kill}
-;;          :reaction (fn [this]
-;;                     (when-let [process (::process @this)]
-;;                        (.kill process)
-;;                        (object/merge! this {::process nil}))))
 
 (behavior :start-task
           :triggers #{:start-task}
